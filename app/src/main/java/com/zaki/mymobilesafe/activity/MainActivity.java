@@ -1,7 +1,9 @@
-package com.zaki.mymobilesafe;
+package com.zaki.mymobilesafe.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.zaki.mymobilesafe.R;
 
 public class MainActivity extends AppCompatActivity {
 
