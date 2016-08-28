@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/theme_bg"
+    android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
+    <include layout="@layout/toolbar_layout" />
+
+    <!-- ellipsize 省略点的位置，指定marquee是跑马灯
+        必须获取焦点才能出现跑马灯效果-->
+    <!--android:marqueeRepeatLimit="marquee_forever"一直滚动-->
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_marquee"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
-</RelativeLayout>
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="hello123425363758586979980900796785746452463646757"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
+    <GridView
+        android:layout_marginTop="30dp"
+        android:id="@+id/gv_functions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3"
+        android:verticalSpacing="20dp">
+
+    </GridView>
+</LinearLayout>
