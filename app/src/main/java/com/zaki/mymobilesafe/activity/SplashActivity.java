@@ -33,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
      * 初始化控件
      */
     private void initUI() {
+
         tv_version_name = (TextView) findViewById(R.id.tv_version_name);
     }
 
@@ -41,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
      */
     private void initData() {
         //1.应用版本名称
-        tv_version_name.setText("版本名称："+getVersionName());
+        tv_version_name.setText("版本名称：" + getVersionName());
         //2.检测（本地版本号与服务器版本号进行比对）是否有更新，有就提示用户下载更新
         //获取本地版本号
         mLocalVersionCode = getVersionCode();
@@ -51,15 +52,15 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * 获取版本号
-     * @return
-     *          非0代表获取成功，为0代表获取失败
+     *
+     * @return 非0代表获取成功，为0代表获取失败
      */
     private int getVersionCode() {
         //1.包管理者对象packageManager
         PackageManager pm = getPackageManager();
         try {
             //2.从包管理者对象中获取指定包名的基本信息（包括版本名称和版本号等）,传0
-            PackageInfo mPackageInfo = pm.getPackageInfo(this.getPackageName(),0);
+            PackageInfo mPackageInfo = pm.getPackageInfo(this.getPackageName(), 0);
             //3.获取版本号
             return mPackageInfo.versionCode;
         } catch (Exception e) {
@@ -70,6 +71,7 @@ public class SplashActivity extends AppCompatActivity {
 
     /**
      * 获取版本名称，从清单文件中
+     *
      * @return
      */
     private String getVersionName() {
@@ -77,7 +79,7 @@ public class SplashActivity extends AppCompatActivity {
         PackageManager pm = getPackageManager();
         try {
             //2.从包管理者对象中获取指定包名的基本信息（包括版本名称和版本号等）,传0
-             PackageInfo mPackageInfo = pm.getPackageInfo(this.getPackageName(),0);
+            PackageInfo mPackageInfo = pm.getPackageInfo(this.getPackageName(), 0);
             //3.获取版本名称
             return mPackageInfo.versionName;
         } catch (Exception e) {
