@@ -33,6 +33,8 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.zaki.mymobilesafe.R;
+import com.zaki.mymobilesafe.utils.ConstantValue;
+import com.zaki.mymobilesafe.utils.SharedPreUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +99,11 @@ public class SplashActivity extends AppCompatActivity {
         mLocalVersionCode = getVersionCode();
         Log.i(TAG,"mLocalVersionCode"+mLocalVersionCode);
         //获取服务器端版本号（客户端发请求，服务端给响应）
-        checkVersion(url);
+        if(SharedPreUtil.myGetBoolean(this, ConstantValue.UPDATE_OPEN,false)){
+            checkVersion(url);
+        }else {
+            enterHome();
+        }
     }
 
     /**

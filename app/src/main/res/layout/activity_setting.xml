@@ -2,10 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/theme_bg">
 
 
     <include layout="@layout/toolbar_layout" />
+    <com.zaki.mymobilesafe.view.SettingItem
+        xmlns:settingitem="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/siv_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        settingitem:myTitle="自动更新设置"
+        settingitem:open="自动更新已开启"
+        settingitem:close="自动更新已关闭">
+
+    </com.zaki.mymobilesafe.view.SettingItem>
+    <com.zaki.mymobilesafe.view.SettingItem
+        xmlns:settingitem="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/siv_phone_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        settingitem:myTitle="自动拦截陌生号码"
+        settingitem:open="自动拦截已开启"
+        settingitem:close="自动拦截已关闭">
+
+    </com.zaki.mymobilesafe.view.SettingItem>
+
+
+
 
 
 
