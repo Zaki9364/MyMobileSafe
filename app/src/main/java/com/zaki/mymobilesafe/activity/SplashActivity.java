@@ -1,16 +1,23 @@
 package com.zaki.mymobilesafe.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -21,11 +28,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.zaki.mymobilesafe.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -33,12 +45,22 @@ import java.io.UnsupportedEncodingException;
  */
 public class SplashActivity extends AppCompatActivity {
     private TextView tv_version_name;
+    //本地版本号
     private int mLocalVersionCode;
+    //volley请求队列
     public static RequestQueue mRequestQueue;
+    //版本名称
     private String versionName;
+    //版本号
     private String versionCode;
+    //版本描述
     private String versionDes;
+    //下载apk地址
     private String downloadUrl;
+    //请求数据开始的时间
+    private long startTime;
+    //请求数据结束的时间
+    private long endTime;
     private String TAG = "SplashActivity";
     private String url = "http://bmob-cdn-5912.b0.upaiyun.com/2016/08/29/5847efba4080408480a36a0a8334fe70.json";
 
@@ -46,7 +68,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //隐藏状态栏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         mRequestQueue = Volley.newRequestQueue(this);
         //初始化UI
@@ -73,6 +95,7 @@ public class SplashActivity extends AppCompatActivity {
         //2.检测（本地版本号与服务器版本号进行比对）是否有更新，有就提示用户下载更新
         //获取本地版本号
         mLocalVersionCode = getVersionCode();
+        Log.i(TAG,"mLocalVersionCode"+mLocalVersionCode);
         //获取服务器端版本号（客户端发请求，服务端给响应）
         checkVersion(url);
     }
@@ -82,6 +105,8 @@ public class SplashActivity extends AppCompatActivity {
      * @param url 请求地址
      */
     private void checkVersion(String url) {
+        startTime = System.currentTimeMillis();
+        Log.i(TAG,"startTime"+startTime);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -96,9 +121,13 @@ public class SplashActivity extends AppCompatActivity {
                     Log.i(TAG, downloadUrl);
                     if(mLocalVersionCode<Integer.parseInt(versionCode)){
                         showUpdateDialog();
+                    }else {
+                        enterHomeDelayed();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.i(TAG,"JSON解析出错");
+                    enterHomeDelayed();
                 }
             }
 
@@ -106,8 +135,9 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.i(TAG, volleyError.toString());
+                enterHomeDelayed();
             }
-        }) {
+        }) {//解决Json乱码
             protected Response<JSONObject> parseNetworkResponse(
                     NetworkResponse response) {
                 JSONObject jsonObject;
@@ -126,6 +156,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         mRequestQueue.add(jsonObjectRequest);
+        endTime = System.currentTimeMillis();
+        Log.i(TAG,"endTime"+endTime);
     }
 
     /**
@@ -139,17 +171,148 @@ public class SplashActivity extends AppCompatActivity {
         builder.setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                finish();
+                enterHome();
             }
         });
         builder.setPositiveButton("立刻更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.i(TAG,"isWifiConnected");
+                if(isWifiConnected(SplashActivity.this)){
+                    downloadApk();
+                    Log.i(TAG,"Sure downloadApk");
+                } else{
+                    showIsContinueDialog();
+                    Log.i(TAG,"showIsContinueDialog");
+                }
+
             }
         });
         builder.setCancelable(false);
         builder.show();
+    }
+
+    /**
+     * 下载新版本Apk
+     */
+    private void downloadApk() {
+        //1判断sd卡是否可用
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //2获取sd卡路径
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + File.separator + "mymobilesafe.apk";
+            //3发送请求，获取apk，放置到指定位置
+            HttpUtils httpUtils = new HttpUtils();
+            //发送请求传递参数(下载地址，放置的路径，回调方法)
+            httpUtils.download("http://bmob-cdn-5912.b0.upaiyun.com/2016/08/27/1357d73c40ba99b1800da303eb3e0083.apk",
+                    path, new RequestCallBack<File>() {
+                        @Override
+                        public void onSuccess(ResponseInfo<File> responseInfo) {
+                            //下载成功
+                            Log.i(TAG, "下载完成");
+                            File file = responseInfo.result;
+                            installApk(file);
+                        }
+
+                        @Override
+                        public void onFailure(HttpException e, String s) {
+                            //下载失败
+                            Log.i(TAG, "下载失败");
+                            Toast.makeText(SplashActivity.this,"下载失败，请检查网络后重试。",Toast.LENGTH_SHORT).show();
+                            enterHome();
+                        }
+
+                        @Override
+                        public void onStart() {
+                            super.onStart();
+                            //下载开始
+                            Toast.makeText(SplashActivity.this,"下载开始",Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, "下载开始");
+                        }
+
+                        @Override
+                        public void onLoading(long total, long current, boolean isUploading) {
+                            super.onLoading(total, current, isUploading);
+                            //下载过程中（总共大小，当前下载大小，是否在下载）
+                            Log.i(TAG, "总共大小 = " + total);
+                            Log.i(TAG, "当前下载 = " + current);
+                            tv_version_name.setText("已经下载 "+100*current/total+"%");
+
+                        }
+                    });
+        }
+
+    }
+
+    /**
+     * 弹出是否继续下载对话框
+     */
+    private void showIsContinueDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setTitle("提醒");
+        builder.setMessage("检测到当前没有wifi连接，继续下载可能消耗数据流量，是否继续？");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                enterHome();
+            }
+        });
+        builder.setPositiveButton("继续", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                downloadApk();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+    /**
+     * 安装新版本Apk
+     * @param file    需要安装的apk
+     */
+    private void installApk(File file) {
+        //系统应用界面,源码,安装apk入口
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+		/*//文件作为数据源
+		intent.setData(Uri.fromFile(file));
+		//设置安装的类型
+		intent.setType("application/vnd.android.package-archive");*/
+        intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+//		startActivity(intent);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        enterHome();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 延时进入主界面
+     */
+    private void enterHomeDelayed() {
+        if (endTime - startTime > 3000) {
+            enterHome();
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    enterHome();
+                }
+            }, 3000-(endTime-startTime));
+        }
+    }
+
+    /**
+     * 直接进入主界面
+     */
+    private void enterHome(){
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        finish();
     }
 
     /**
@@ -189,4 +352,20 @@ public class SplashActivity extends AppCompatActivity {
         }
         return null;
     }
+
+    /**
+     * 判断wifi是否连接
+     * @param context
+     * @return true 代表连接上
+     */
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetworkInfo.isConnected()) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
