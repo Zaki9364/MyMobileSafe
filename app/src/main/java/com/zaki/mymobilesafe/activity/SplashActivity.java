@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,7 +98,7 @@ public class SplashActivity extends AppCompatActivity {
         mLocalVersionCode = getVersionCode();
         Log.i(TAG,"mLocalVersionCode"+mLocalVersionCode);
         //获取服务器端版本号（客户端发请求，服务端给响应）
-        if(SharedPreUtil.myGetBoolean(this, ConstantValue.UPDATE_OPEN,false)){
+        if(SharedPreUtil.getBoolean(this, ConstantValue.UPDATE_OPEN,false)){
             checkVersion(url);
         }else {
             enterHome();

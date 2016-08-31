@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/theme_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="通过绑定sim卡:\n下次重启手机发现sim卡变化\n就会发送报警短信"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            <com.zaki.mymobilesafe.view.SettingItem xmlns:settingitem="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/siv_sim_bind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                settingitem:close="sim卡未绑定"
+                settingitem:myTitle="点击绑定sim卡"
+                settingitem:open="sim卡已绑定">
+
+            </com.zaki.mymobilesafe.view.SettingItem>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="下一步"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</LinearLayout>

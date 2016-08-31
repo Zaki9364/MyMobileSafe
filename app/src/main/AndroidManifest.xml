@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zaki.mymobilesafe"
-    android:versionCode="2"
+    android:versionCode="1"
     android:versionName="1.0">
     <!--versionCode版本号，本地应用版本号是1，服务端是2，有必要提示用户更新-->
     <!--versionName版本名称-->
@@ -32,6 +32,18 @@
         </activity>
 
         <activity android:name=".activity.SettingActivity">
+
+        </activity>
+        <activity android:name=".activity.SetupOverActivity">
+
+        </activity>
+        <activity android:name=".activity.Setup1Activity">
+
+        </activity>
+        <activity android:name=".activity.Setup2Activity">
+
+        </activity>
+        <activity android:name=".activity.Setup3Activity">
 
         </activity>
     </application>
