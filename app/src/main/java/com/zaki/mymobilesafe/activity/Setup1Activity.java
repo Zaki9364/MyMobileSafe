@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.zaki.mymobilesafe.R;
+import com.zaki.mymobilesafe.utils.ActivityCollector;
 
 /**
  * Created by zaki on 2016/8/31.
@@ -22,6 +23,7 @@ public class Setup1Activity extends BaseAppCompatActivity implements View.OnClic
         if (bt_next != null) {
             bt_next.setOnClickListener(this);
         }
+        ActivityCollector.addActivity(this);
     }
 
     @Override
@@ -45,5 +47,10 @@ public class Setup1Activity extends BaseAppCompatActivity implements View.OnClic
     private void nextStep() {
         Intent intent = new Intent(Setup1Activity.this,Setup2Activity.class);
         startActivity(intent);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }

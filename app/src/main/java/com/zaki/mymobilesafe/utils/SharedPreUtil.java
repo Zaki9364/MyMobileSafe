@@ -59,4 +59,11 @@ public class SharedPreUtil {
         }
         return pref.getString(key,defvalue);
     }
+
+    public static void remove(Context context, String key) {
+        if (pref == null){
+            pref = context.getSharedPreferences("data",Context.MODE_PRIVATE);
+        }
+        pref.edit().remove(key).commit();
+    }
 }

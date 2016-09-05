@@ -1,7 +1,9 @@
 package com.zaki.mymobilesafe.activity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.zaki.mymobilesafe.R;

@@ -27,14 +27,16 @@
                 android:textSize="20sp" />
 
             <EditText
+                android:id="@+id/et_phone_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="请输入安全号码"
-                android:inputType="number"
+                android:inputType="phone"
                 android:textColorHint="#BFBFBF" />
 
             <Button
+                android:id="@+id/bt_choose_phone_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
