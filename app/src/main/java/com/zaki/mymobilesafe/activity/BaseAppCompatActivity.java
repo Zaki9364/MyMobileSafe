@@ -85,6 +85,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         return (Toolbar) findViewById(R.id.toolbar_root);
     }
 
+
     /**
      * 版本号小于21的后退按钮图片
      */

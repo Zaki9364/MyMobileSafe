@@ -59,7 +59,7 @@ public class QueryAddressActivity extends BaseAppCompatActivity {
                             getApplicationContext(), R.anim.shake);
                     //手机震动
                     Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(2000);
+                    vibrator.vibrate(500);
 
                     //interpolator插补器,数学函数
                     //自定义插补器

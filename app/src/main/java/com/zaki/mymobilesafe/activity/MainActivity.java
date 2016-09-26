@@ -157,16 +157,22 @@ public class MainActivity extends BaseAppCompatActivity {
                         showMyDialog();
                         break;
                     case 1:
+                        startActivity(new Intent(MainActivity.this, BlackNumberActivity.class));
                         break;
                     case 2:
+                        startActivity(new Intent(MainActivity.this, AppManagerActivity.class));
                         break;
                     case 3:
+                        startActivity(new Intent(MainActivity.this, ProcessManagerActivity.class));
                         break;
                     case 4:
+                        startActivity(new Intent(MainActivity.this, TrafficActivity.class));
                         break;
                     case 5:
+                        startActivity(new Intent(MainActivity.this, AnitVirusActivity.class));
                         break;
                     case 6:
+                        startActivity(new Intent(MainActivity.this, CacheClearActivity.class));
                         break;
                     case 7:
                         startActivity(new Intent(MainActivity.this, AToolActivity.class));

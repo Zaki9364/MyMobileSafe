@@ -14,5 +14,35 @@
         android:textSize="20sp"
         android:textColor="#fff"
         android:background="@drawable/selector_atool_item_bg"/>
+    <TextView
+        android:id="@+id/tv_sms_backup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="短信备份"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:background="@drawable/selector_atool_item_bg"/>
+    <TextView
+        android:id="@+id/tv_commonnumber_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="常用号码查询"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:background="@drawable/selector_atool_item_bg"/>
+    <TextView
+        android:id="@+id/tv_app_lock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="程序锁"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:background="@drawable/selector_atool_item_bg"/>
 
 </LinearLayout>

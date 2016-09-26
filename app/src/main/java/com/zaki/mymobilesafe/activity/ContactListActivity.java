@@ -37,6 +37,7 @@ public class ContactListActivity extends BaseAppCompatActivity {
             mAdapter = new ContactAdapter(ContactListActivity.this, contactList);
             lv_contact.setAdapter(mAdapter);
         }
+
     };
 
     @Override

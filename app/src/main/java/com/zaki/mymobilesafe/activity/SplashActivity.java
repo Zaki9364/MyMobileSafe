@@ -84,15 +84,19 @@ public class SplashActivity extends AppCompatActivity {
     }
     private void initDB() {
         //1,归属地数据拷贝过程
-        initAddressDB("address.db");
-        Log.i("++++++++++++++++++","22222222222222222");
+        initMyDB("address.db");
+        //2,常用号码数据库拷贝过程
+        initMyDB("commonnum.db");
+        //3,拷贝病毒数据库
+        initMyDB("antivirus.db");
+        Log.i("+++SplashActivity+++","数据库拷贝完成");
     }
 
     /**
      * 拷贝数据库值files文件夹下
      * @param dbName	数据库名称
      */
-    private void initAddressDB(String dbName) {
+    private void initMyDB(String dbName) {
         //1,在files文件夹下创建同名dbName数据库文件过程
         Log.i("++++++++++++++++++","3333333333333333333");
         File files = getFilesDir();

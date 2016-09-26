@@ -19,17 +19,45 @@
     </com.zaki.mymobilesafe.view.SettingItem>
     <com.zaki.mymobilesafe.view.SettingItem
         xmlns:settingitem="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/siv_phone_address"
+        android:id="@+id/siv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        settingitem:myTitle="自动拦截陌生号码"
-        settingitem:open="自动拦截已开启"
-        settingitem:close="自动拦截已关闭">
+        settingitem:myTitle="电话归属地的显示设置"
+        settingitem:open="归属地的显示已开启"
+        settingitem:close="归属地的显示已关闭">
 
     </com.zaki.mymobilesafe.view.SettingItem>
+    <com.zaki.mymobilesafe.view.SettingClickView
+        android:id="@+id/scv_toast_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.zaki.mymobilesafe.view.SettingClickView>
+    <com.zaki.mymobilesafe.view.SettingClickView
+        android:id="@+id/scv_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.zaki.mymobilesafe.view.SettingClickView>
 
+    <com.zaki.mymobilesafe.view.SettingItem
+        xmlns:settingitem="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/siv_blacknumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        settingitem:myTitle="黑名单拦截设置"
+        settingitem:open="黑名单拦截已开启"
+        settingitem:close="黑名单拦截已关闭">
 
+    </com.zaki.mymobilesafe.view.SettingItem>
+    <com.zaki.mymobilesafe.view.SettingItem
+        xmlns:settingitem="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/siv_app_lock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        settingitem:myTitle="程序锁设置"
+        settingitem:open="程序锁已开启"
+        settingitem:close="程序锁已关闭">
 
+    </com.zaki.mymobilesafe.view.SettingItem>
 
 
 
